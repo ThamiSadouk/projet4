@@ -1,0 +1,2 @@
+# permet d'interdire l'accès au dossier app via l'url
+Options -Indexes

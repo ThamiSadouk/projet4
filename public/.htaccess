@@ -1,0 +1,10 @@
+#on redirige les adresses url vers index.php sauf pour les fichiers dans dossier public
+# réécrit l'adresse URL (ex: pour app.com/public?url=posts affiche app.com/public/posts)
+<IfModule mod_rewrite.c>
+    Options -Multiviews
+    RewriteEngine On
+    RewriteBase /projet4/public
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule  ^(.+)$ index.php?url=$1 [QSA,L]
+</IfModule>
