@@ -4,6 +4,14 @@ class PagesController
 {
     public function __construct()
     {
-        echo 'Pages loaded';
+
+    }
+
+    public function index() {
+        echo 'home page';
+    }
+
+    public function about() {
+        echo 'hello world';
     }
 }
