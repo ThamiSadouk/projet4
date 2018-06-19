@@ -1,6 +1,6 @@
 <?php
 
-class PagesController
+class PagesController extends BaseController
 {
     public function __construct()
     {
@@ -8,7 +8,7 @@ class PagesController
     }
 
     public function index() {
-        echo 'home page';
+        $this->loadView('hello');
     }
 
     public function about() {
