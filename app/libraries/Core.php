@@ -19,8 +19,9 @@ class Core
         $this->getMethod();
         $this->getParams();
 
-        // appelle les fonctions callback dans le dossier controllers avec les paramètres rassemblés dans un tableau
+        // appelle la methode du controller sélectionné avec un paramètre
         call_user_func_array([$this->currentController, $this->currentMethod], $this->params);
+
     }
 
     //permet d'obtenir la valeur du paramètre url (le paramètre url est set dans .htaccess)
