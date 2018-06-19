@@ -1,9 +1,20 @@
 <?php
 
-class PostsController
+class Posts extends BaseController
 {
     public function __construct()
     {
-        echo 'Pages Posts Loaded ! ';
+        $this->postModel = $this->loadModel('Post');
+    }
+
+    public function index()
+    {
+        // appelle methode getpost dans models
+        $posts = $this->postModel->getPosts();
+        $data = [
+            'posts' => $posts
+        ];
+
+        $this->loadView('index', $data);
     }
 }
