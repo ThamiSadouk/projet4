@@ -1,5 +1,7 @@
 <?php
 
+namespace App\Libraries;
+
 class Database
 {
     private $host = 'localhost';
@@ -10,10 +12,10 @@ class Database
     protected function dbConnect() {
         try
         {
-            $db = new PDO('mysql:host='.$this->host.';dbname='.$this->db_name.';charset=utf8', $this->username, $this->password, array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
+            $db = new \PDO('mysql:host='.$this->host.';dbname='.$this->db_name.';charset=utf8', $this->username, $this->password, array(\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION));
             return $db;
         }
-        catch(Exception $e)
+        catch(\Exception $e)
         {
             die('Erreur : '.$e->getMessage());
         }

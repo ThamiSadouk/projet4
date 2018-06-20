@@ -1,5 +1,7 @@
 <?php
 
+use \App\Libraries\BaseController;
+
 class PagesController extends BaseController
 {
     public function __construct()

@@ -1,8 +1,8 @@
 <?php
 
-/*
- * Charge les models et les views
- */
+    /*
+     * Charge les models et les views
+     */
 class BaseController
 {
     public function loadModel($model) {
