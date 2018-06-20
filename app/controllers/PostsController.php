@@ -1,6 +1,6 @@
 <?php
 
-class PostsController extends BaseController
+class PostsController
 {
     public function __construct()
     {

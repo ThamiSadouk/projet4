@@ -1,8 +1,9 @@
 <?php
 
-    /*
-     * Charge les models et les views
-     */
+namespace App\Libraries;
+/*
+ * Charge les models et les views
+ */
 class BaseController
 {
     public function loadModel($model) {
