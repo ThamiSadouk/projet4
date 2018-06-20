@@ -2,11 +2,12 @@
 
 class Post
 {
+    private $db;
 
     public function getPosts()
     {
-        $db = $this->dbConnect();
-        $req = $db->query('
+        $this->db = $this->dbConnect();
+        $req = $this->db->query('
           SELECT id, title, content, DATE_FORMAT(creation_date, \'%d/%m/%Y à %Hh%imin%ss\') 
           AS creation_date_fr 
           FROM posts 
@@ -20,8 +21,9 @@ class Post
     {
         try
         {
-            $db = new PDO('mysql:host=localhost;dbname=projet4;charset=utf8', 'root', 'root');
-            return $db;
+            $this->db = new PDO('mysql:host=localhost;dbname=projet4;charset=utf8', 'root', 'root', array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
+
+            return $this->db;
         }
         catch(Exception $e)
         {
