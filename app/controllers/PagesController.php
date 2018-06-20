@@ -4,7 +4,7 @@ class PagesController extends BaseController
 {
     public function __construct()
     {
-        $this->postModel = $this->loadModel('Post');
+        $this->postModel = $this->loadModel('PostManager');
     }
 
     public function index() {

@@ -3,12 +3,11 @@
 <?php ob_start(); ?>
     <h1>Mon super blog !</h1>
     <p>Derniers billets du blog :</p>
-<?php
 
+<?php
 while ($data = $posts->fetch())
 {
 ?>
-    <p>machin</p>
     <div class="news">
         <h3>
             <?= htmlspecialchars($data['title']) ?>
