@@ -13,7 +13,7 @@ class BaseController
         return new $model();
     }
 
-    public function loadView($view, $posts) {
+    public function loadView($view, $data) {
         // Vérifie si le fichier dans dossier views existe
         if(file_exists('../app/views/' . $view . '.php')) {
             require_once '../app/views/' . $view . '.php';

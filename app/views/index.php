@@ -4,26 +4,20 @@
     <h1>Mon super blog !</h1>
     <p>Derniers billets du blog :</p>
 
-<?php
-while ($data = $posts->fetch())
-{
-?>
+<?php foreach($data['posts'] as $post) : ?>
     <div class="news">
         <h3>
-            <?= htmlspecialchars($data['title']) ?>
-            <em>le <?= $data['creation_date_fr'] ?></em>
+            <?= htmlspecialchars($post->title) ?>
+            <em>le <?= $post->creation_date_fr ?></em>
         </h3>
 
         <p>
-            <?= nl2br(htmlspecialchars($data['content'])) ?>
+            <?= nl2br(htmlspecialchars($post->content)) ?>
             <br>
-            <em><a href="<?= URLROOT; ?>/pagesController/showPost/<?= htmlspecialchars($data['id']) ?>">En savoir plus</a> </em>
+            <em><a href="<?= URLROOT; ?>/pagesController/showPost/<?= htmlspecialchars($post->id) ?>">En savoir plus</a> </em>
         </p>
     </div>
-<?php
-}
-$posts->closeCursor();
-?>
+<?php endforeach; ?>
 <?php $content = ob_get_clean(); ?>
 
 <?php require('template.php'); ?>
