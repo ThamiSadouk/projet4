@@ -8,7 +8,7 @@
 define('APPROOT', dirname(dirname(__FILE__)));
 
 // URL Root
-define('URLROOT', 'http://localhost:8888/shareposts');
+define('URLROOT', 'http://localhost:8888/projet4');
 
 // Site Name
 define('SITENAME', 'Blog');

@@ -16,7 +16,13 @@ class PagesController extends BaseController
         $this->loadView('index', $posts);
     }
 
+    public function showPost($id) {
+        $posts = $this->postModel->getPostById($id);
+
+        $this->loadView('postView', $posts);
+    }
+
     public function about() {
-        echo 'hello world';
+        $this->loadView('about', '');
     }
 }

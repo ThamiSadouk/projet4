@@ -16,6 +16,8 @@ while ($data = $posts->fetch())
 
         <p>
             <?= nl2br(htmlspecialchars($data['content'])) ?>
+            <br>
+            <em><a href="<?= URLROOT; ?>/pagesController/showPost/<?= htmlspecialchars($data['id']) ?>">En savoir plus</a> </em>
         </p>
     </div>
 <?php

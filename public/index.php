@@ -1,4 +1,7 @@
 <?php
+
+// charge fichier config
+require '../app/config/config.php';
 // charge le CoreController
 require_once '../app/libraries/Core.php';
 require_once '../app/libraries/BaseController.php';
