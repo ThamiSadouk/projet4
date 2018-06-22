@@ -8,6 +8,10 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
     <link rel="stylesheet" href="<?= URLROOT; ?>/css/style.css">
+
+    <!-- Custom styles for this template -->
+    <link href="https://fonts.googleapis.com/css?family=Playfair+Display:700,900" rel="stylesheet">
+    <link href="<?= URLROOT; ?>/css/custom.css" rel="stylesheet">
     <title><?= $title ?></title>
 </head>
 
@@ -28,6 +32,16 @@
                         <a class="nav-link" href="<?= URLROOT; ?>">Accueil</a>
                     </li>
                 </ul>
+
+                <ul class="navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="<?= URLROOT; ?>/users/register">S'inscrire</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="<?= URLROOT; ?>/users/login">Se connecter</a>
+                        </li>
+                </ul>
+
             </div>
         </div>
     </nav>

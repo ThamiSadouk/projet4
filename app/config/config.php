@@ -11,7 +11,4 @@ define('APPROOT', dirname(dirname(__FILE__)));
 define('URLROOT', 'http://localhost:8888/projet4');
 
 // Site Name
-define('SITENAME', 'Blog');
-
-// App Version
-define('APPVERSION', '1.0.0');
+define('SITENAME', 'Jean Forteroche');

@@ -2,21 +2,16 @@
 
 <?php ob_start(); ?>
 
-<h1>Mon super blog !</h1>
-<p><a href="<?= URLROOT; ?>">Retour à la liste des billets</a></p>
+<a href="<?= URLROOT; ?>" class="btn btn-light mt-4"><i class="fas fa-backward"></i> Retour</a>
 
-<div class="news">
-    <h3>
-        <?= htmlspecialchars($data['post']->title) ?>
-        <em>le <?= htmlspecialchars($data['post']->creation_date_fr) ?></em>
-    </h3>
-    <p>
-        <?= htmlspecialchars($data['post']->content) ?><br>
-    </p>
-
+<div class="blog-post pt-3">
+    <h2 class="blog-post-title"><?= htmlspecialchars($data['post']->title) ?></h2>
+    <p class="blog-post-meta"><?= htmlspecialchars($data['post']->creation_date_fr) ?></p>
+    <p><?= htmlspecialchars($data['post']->content) ?><br></p>
 </div>
+
 <div class="comments">
-    <h2>Commentaires</h2>
+    <h3>Commentaires</h3>
     <form action="<?= URLROOT; ?>/PagesController/showPost/<?= $data['post']->id ?>" method="post">
         <div>
             <label for="author">Auteur</label><br />

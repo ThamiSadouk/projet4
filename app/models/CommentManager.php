@@ -8,8 +8,8 @@ class CommentManager extends Database
     {
         $db = $this->dbConnect();
         $stmt = $db->prepare('
-          INSERT INTO comments(post_id, author, comment) 
-          VALUES (?, ?, ?)');
+          INSERT INTO comments(post_id, author, comment, comment_date) 
+          VALUES (?, ?, ?, NOW())');
         $commentAdded = $stmt->execute(array($data['postId'], $data['author'], $data['comment']));
 
         return $commentAdded;
