@@ -20,14 +20,25 @@ class PagesController extends BaseController
     }
 
     public function showPost($postId) {
-        $post = $this->postModel->getPostById($postId);
-        $comments = $this->postModel->getComments($postId);
-        $data = [
-            'post' => $post,
-            'comments' => $comments
-        ];
 
-        $this->loadView('postView', $data);
+        if($_SERVER['REQUEST_METHOD'] == 'POST') {
+            require_once 'CommentsController.php';
+
+            $commentsController = new CommentsController();
+            $commentsController->add($postId);
+
+        } else {
+            $post = $this->postModel->getPostById($postId);
+            $comments = $this->postModel->getComments($postId);
+            $data = [
+                'post' => $post,
+                'comments' => $comments
+            ];
+
+            $this->loadView('postView', $data);
+        }
+
+
     }
 
     public function about() {
