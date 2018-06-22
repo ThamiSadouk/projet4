@@ -37,11 +37,5 @@ class PagesController extends BaseController
 
             $this->loadView('postView', $data);
         }
-
-
-    }
-
-    public function about() {
-        $this->loadView('about', '');
     }
 }
