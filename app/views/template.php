@@ -35,10 +35,10 @@
 
                 <ul class="navbar-nav ml-auto">
                         <li class="nav-item">
-                            <a class="nav-link" href="<?= URLROOT; ?>/users/register">S'inscrire</a>
+                            <a class="nav-link" href="<?= URLROOT; ?>/usersController/register">S'inscrire</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="<?= URLROOT; ?>/users/login">Se connecter</a>
+                            <a class="nav-link" href="<?= URLROOT; ?>/usersController/login">Se connecter</a>
                         </li>
                 </ul>
 
