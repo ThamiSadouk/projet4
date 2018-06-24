@@ -34,12 +34,21 @@
                 </ul>
 
                 <ul class="navbar-nav ml-auto">
+                    <?php if(isset($_SESSION['user_id'])) : ?>
                         <li class="nav-item">
-                            <a class="nav-link" href="<?= URLROOT; ?>/usersController/register">S'inscrire</a>
+                            <a class="nav-link" href="#">Bienvenue <?= $_SESSION['user_name']; ?></a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="<?= URLROOT; ?>/usersController/login">Se connecter</a>
+                            <a class="nav-link" href="<?= URLROOT; ?>/usersController/logout">Logout</a>
                         </li>
+                    <?php else : ?>
+                        <li class="nav-item">
+                            <a class="nav-link" href="<?= URLROOT; ?>/usersController/register">Register</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="<?= URLROOT; ?>/usersController/login">Login</a>
+                        </li>
+                    <?php endif; ?>
                 </ul>
 
             </div>

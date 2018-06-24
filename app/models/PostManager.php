@@ -45,4 +45,20 @@ class PostManager extends Database
 
         return $comments;
     }
+
+    public function addPost($data)
+    {
+        $db = $this->dbConnect();
+        $stmt = $db->prepare('
+        INSERT INTO posts (title, user_id, content, creation_date)
+        VALUES (:title, :user_id, :content, NOW())');
+
+        $postAdded= $stmt->execute(array(
+            'title' => $data['title'],
+            'user_id' => $data['user_id'],
+            'content' => $data['content']
+        ));
+
+        return $postAdded;
+    }
 }

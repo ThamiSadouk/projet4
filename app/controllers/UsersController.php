@@ -16,7 +16,7 @@ class UsersController extends BaseController
     {
         // check for POST : si la méthode de requête POST est utilisé
         if($_SERVER['REQUEST_METHOD'] == 'POST') {
-            // Sanitize POST data : récupère les valeurs POST   et supprime les balises et caractères spéciaux qui peuvent être insérés
+            // Sanitize POST data : récupère les valeurs POST et supprime les balises et caractères spéciaux qui peuvent être insérés
             $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
             // Init data
             $data = [
@@ -32,29 +32,30 @@ class UsersController extends BaseController
 
             // Valider email
             if(empty($data['email'])) {
-                $data['email_err'] = 'Please enter email';
+                $data['email_err'] = 'Veuillez entrer un email';
             } else {
+
                 // check email
                 if($this->userModel->findUserByEmail($data['email'])) {
-                    $data['email_err'] = 'Email is already taken';
+                    $data['email_err'] = 'L\'email existe déjà';
                 }
             }
 
             // Valider nom
             if(empty($data['name'])) {
-                $data['name_err'] = 'Please enter name';
+                $data['name_err'] = 'Veuillez entrer un nom d\'utilisateur';
             }
 
             // Valider mp
             if(empty($data['password'])) {
-                $data['password_err'] = 'Please enter password';
+                $data['password_err'] = 'Veuillez entrer un mot de passe';
             } elseif(strlen($data['password']) < 6) {
                 $data['password_err'] = 'Le mot de passe doit faire au moins 6 charactères';
             }
 
             // Valider Confirm password
             if(empty($data['confirm_password'])) {
-                $data['confirm_password_err'] = 'Please enter confirm password';
+                $data['confirm_password_err'] = 'Veuillez confirmer le mot de passe';
             } elseif($data['password'] != $data['confirm_password']) {
                 $data['confirm_password_err'] = 'Les mots de passe ne correspondent pas';
             }
@@ -68,11 +69,11 @@ class UsersController extends BaseController
 
                 // inscription utilisateur
                 if($this->userModel->register($data)) {
-                    flash('register_success', 'You are registered and you can log in');
-                    header('location: ' . URLROOT . '/login');
+                    flash('register_success', 'Vous êtes inscrit !  Vous pouvez maintenant vous connecter');
+                    header('location: ' . URLROOT . '/usersController/login');
 
                 } else {
-                    die('something went wrong');
+                    die('une erreur est survenue');
                 }
             } else {
                 // charge view errors
@@ -96,17 +97,90 @@ class UsersController extends BaseController
         }
     }
 
-    public function login()
-    {
-        // init data : on place les données de l'utilisateur dans un tableau en cas d'erreur de saisie, les données précédentes sont renvoyées
-        $data = [
-            'email' => '',
-            'password' => '',
-            'email_err' => '',
-            'password_err' => '',
-        ];
+        public function login() {
+        // check for POST : si la méthode de requête POST est utilisé
+        if($_SERVER['REQUEST_METHOD'] == 'POST') {
+            // Process form
+            // Sanitize POST data
+            $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+            // Init data
+            $data = [
+                'email' => trim($_POST['email']),
+                'password' => trim($_POST['password']),
+                'email_err' => '',
+                'password_err' => '',
+            ];
 
-        //load view
-        $this->loadView('login', $data);
+            // Valider email
+            if(empty($data['email'])) {
+                $data['email_err'] = 'Veuillez entrer un email';
+            } elseif($this->userModel->findUserByEmail($data['email'])) { // Check for user/email
+                // User found
+            } else {
+                // User not found
+                $data['email_err'] = 'Aucun utilisateur trouvé';
+            }
+
+            // Valider mp
+            if(empty($data['password'])) {
+                $data['password_err'] = 'Veuillez entrer un mot de passe';
+            }
+
+            // vérifie si il n'y a pas d'erreurs
+            if(empty($data['email_err']) && empty($data['password_err'])) {
+                // valider
+                // check et set loggedInUser
+                $loggedInUser = $this->userModel->login($data['email'], $data['password']);
+
+                if($loggedInUser) {
+                    // créé session
+                    $this->createUserSession($loggedInUser);
+                } else {
+                    $data['password_err'] = 'mot de passe incorrect';
+                    $this->loadView('login', $data);
+                }
+            } else {
+                // charge view errors
+                $this->loadView('login', $data);
+            }
+
+        } else {
+            // init data : on place les données de l'utilisateur dans un tableau en cas d'erreur de saisie, les données précédentes sont renvoyées
+            $data = [
+                'email' => '',
+                'password' => '',
+                'email_err' => '',
+                'password_err' => '',
+            ];
+
+            //charge vue
+            $this->loadView('login', $data);
+        }
+    }
+
+        /*
+         * Set the user datas from the db to a SESSION variable
+         * $user vient de la méthode login du modele UserManager qui renvoie $row (cette variable contients les details du user)
+         */
+        public function createUserSession($user)
+    {
+        $_SESSION['user_id'] = $user->id;
+        $_SESSION['user_email'] = $user->email;
+        $_SESSION['user_name'] = $user->name;
+        header('Location: ' . URLROOT);
+    }
+
+        /*
+         * unset the sessions variables
+         * destroy the global variable
+         * redirect to the login page
+         */
+        public function logout()
+    {
+        unset($_SESSION['user_id']);
+        unset($_SESSION['user_email']);
+        unset($_SESSION['user_name']);
+        session_destroy();
+        header('Location: ' . URLROOT);
     }
 }

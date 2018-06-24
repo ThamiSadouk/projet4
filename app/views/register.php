@@ -31,7 +31,7 @@
                             <input type="submit" value="valider" class="btn btn-success btn-block">
                         </div>
                         <div class="col">
-                            <a href="<?= URLROOT; ?>/users/login" class="btn btn-light btn-block">Vous avez un compte? Se connecter</a>
+                            <a href="<?= URLROOT; ?>/usersController/login" class="btn btn-light btn-block">Vous avez un compte? Se connecter</a>
                         </div>
                     </div>
                 </form>
