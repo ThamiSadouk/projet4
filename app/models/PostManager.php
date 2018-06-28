@@ -1,5 +1,6 @@
 <?php
 
+
 use \App\Libraries\Database;
 
 class PostManager extends Database
@@ -28,6 +29,10 @@ class PostManager extends Database
         $req->execute(array($postId));
         $post = $req->fetch();
 
+        // si la varialble n'est pas un booléen, retourne une class post avec en paramètres les données récupérées dans $post
+        if(!is_bool($post)) {
+            return new Post($post);
+        }
         return $post;
     }
 
@@ -43,6 +48,10 @@ class PostManager extends Database
         $stmt->execute(array($postId));
         $comments = $stmt->fetchAll();
 
+        // retourne objet comments avec en paramètres les données récupérées dans $comments
+        if(!is_bool($comments)) {
+            return new Comment($comments);
+        }
         return $comments;
     }
 

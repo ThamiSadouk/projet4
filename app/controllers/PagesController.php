@@ -19,8 +19,11 @@ class PagesController extends BaseController
         $this->loadView('index', $data);
     }
 
+    /**
+     * Affiche le billet et les commentaires à l'id correspondant
+     * @param $postId
+     */
     public function showPost($postId) {
-
         if($_SERVER['REQUEST_METHOD'] == 'POST') {
             require_once 'CommentsController.php';
 

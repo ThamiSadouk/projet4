@@ -13,7 +13,7 @@ class Database
         try
         {
             // Déclaration d'une instance PDO
-            $db = new \PDO('mysql:host='.$this->host.';dbname='.$this->dbname.';charset=utf8', $this->username, $this->password);
+            $db = new \PDO('mysql:host='.$this->host.';dbname='.$this->dbname.';charset=utf8', $this->username, $this->password, array(\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION));
             // établit attribut 'fetch' en tant qu'objet
             $db->setAttribute(\PDO::ATTR_DEFAULT_FETCH_MODE, \PDO::FETCH_OBJ);
             return $db;
