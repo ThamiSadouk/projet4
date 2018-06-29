@@ -23,36 +23,43 @@ class PostManager extends Database
     {
         $db = $this->dbConnect();
         $req = $db->prepare('
-        SELECT id, title, content, DATE_FORMAT(creation_date, \'%d/%m/%Y à %Hh%imin%ss\') creation_date_fr 
+        SELECT id, title, content, DATE_FORMAT(creation_date, \'%d/%m/%Y à %Hh%imin%ss\') creationDateFr
         FROM posts WHERE id = ?');
 
         $req->execute(array($postId));
-        $post = $req->fetch();
+        $data = $req->fetch(PDO::FETCH_ASSOC);
 
         // si la varialble n'est pas un booléen, retourne une class post avec en paramètres les données récupérées dans $post
-        if(!is_bool($post)) {
-            return new Post($post);
+        if(!is_bool($data)) {
+            $post =  new Post($data);
+            return $post;
         }
-        return $post;
+        return $data;
     }
 
     public function getComments($postId)
     {
         $db = $this->dbConnect();
         $stmt = $db->prepare('
-          SELECT id, author, comment, DATE_FORMAT(comment_date, \'%d/%m/%Y à %Hh%imin%ss\') AS comment_date_fr 
+          SELECT id, author, comment, DATE_FORMAT(commentDate, \'%d/%m/%Y à %Hh%imin%ss\') AS commentDateFr 
           FROM comments 
-          WHERE post_id = ? 
-          ORDER BY comment_date DESC
+          WHERE postId = ? 
+          ORDER BY commentDate DESC
     ');
         $stmt->execute(array($postId));
-        $comments = $stmt->fetchAll();
+        /*$data = $stmt->fetchAll();
 
-        // retourne objet comments avec en paramètres les données récupérées dans $comments
-        if(!is_bool($comments)) {
-            return new Comment($comments);
+        $comment =  new Comment($data);
+        var_dump($comment);
+        die();*/
+        while ($data = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            // retourne objet comments avec en paramètres les données récupérées dans $comments
+            if(!is_bool($data)) {
+                $comment =  new Comment($data);
+                return $comment;
+            }
         }
-        return $comments;
+        return $data;
     }
 
     public function addPost($data)

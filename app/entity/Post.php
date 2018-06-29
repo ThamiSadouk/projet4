@@ -10,19 +10,11 @@ class Post
     private $id;
     private $title;
     private $content;
-    private $creation_date_fr;
+    private $creationDateFr;
 
     public function __construct($data)
     {
         $this->hydrate($data);
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getTitle()
-    {
-        return htmlspecialchars($this->title);
     }
 
     /**
@@ -39,6 +31,22 @@ class Post
     public function setId($id)
     {
         $this->id = $id;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTitle()
+    {
+        return htmlspecialchars($this->title);
+    }
+
+    /**
+     * @param mixed $title
+     */
+    public function setTitle($title)
+    {
+        $this->title = $title;
     }
 
     /**
@@ -62,15 +70,15 @@ class Post
      */
     public function getCreationDateFr()
     {
-        return $this->creation_date_fr;
+        return $this->creationDateFr;
     }
 
     /**
-     * @param mixed $creation_date_fr
+     * @param mixed $creationDateFr
      */
-    public function setCreationDateFr($creation_date_fr)
+    public function setCreationDateFr($creationDateFr)
     {
-        $this->creation_date_fr = $creation_date_fr;
+        $this->creationDateFr = $creationDateFr;
     }
 
 }

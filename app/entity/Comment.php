@@ -7,10 +7,11 @@
 class Comment
 {
     use HydratorTrait;
-    private $post_id;
+    private $id;
+    private $postId;
     private $author;
     private $comment;
-    private $comment_date;
+    private $commentDateFr;
 
     public function __construct($data)
     {
@@ -20,17 +21,33 @@ class Comment
     /**
      * @return mixed
      */
-    public function getPostId()
+    public function getId()
     {
-        return $this->post_id;
+        return $this->id;
     }
 
     /**
-     * @param mixed $post_id
+     * @param mixed $id
      */
-    public function setPostId($post_id)
+    public function setId($id)
     {
-        $this->post_id = $post_id;
+        $this->id = $id;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPostId()
+    {
+        return $this->postId;
+    }
+
+    /**
+     * @param mixed $postId
+     */
+    public function setPostId($postId)
+    {
+        $this->postId = $postId;
     }
 
     /**
@@ -68,17 +85,18 @@ class Comment
     /**
      * @return mixed
      */
-    public function getCommentDate()
+    public function getCommentDateFr()
     {
-        return $this->comment_date;
+        return $this->commentDateFr;
     }
 
     /**
-     * @param mixed $comment_date
+     * @param mixed $commentDateFr
      */
-    public function setCommentDate($comment_date)
+    public function setCommentDate($commentDateFr)
     {
-        $this->comment_date = $comment_date;
+        $this->commentDateFr = $commentDateFr;
+        ;
     }
 
 

@@ -27,7 +27,7 @@
     </form>
 
     <?php foreach ($data['comments'] as $comment) : ?>
-        <p><strong><?= $comment->getAuthor(); ?></strong> le <?= $comment->getCommentDate(); ?></p>
+        <p><strong><?= $comment->getAuthor();  ?></strong> le <?= $comment->getCommentDateFr(); ?></p>
         <p><?= nl2br($comment->getComment()); ?></p>
     <?php endforeach; ?>
 
