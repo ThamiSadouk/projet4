@@ -38,7 +38,7 @@ class Post
      */
     public function getTitle()
     {
-        return htmlspecialchars($this->title);
+        return$this->title;
     }
 
     /**
@@ -54,7 +54,7 @@ class Post
      */
     public function getContent()
     {
-        return htmlspecialchars($this->content);
+        return $this->content;
     }
 
     /**

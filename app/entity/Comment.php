@@ -12,6 +12,7 @@ class Comment
     private $author;
     private $comment;
     private $commentDateFr;
+    private $signalement;
 
     public function __construct($data)
     {
@@ -71,7 +72,7 @@ class Comment
      */
     public function getComment()
     {
-        return htmlspecialchars($this->comment);
+        return $this->comment;
     }
 
     /**
@@ -97,6 +98,22 @@ class Comment
     {
         $this->commentDateFr = $commentDateFr;
         ;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSignalement()
+    {
+        return $this->signalement;
+    }
+
+    /**
+     * @param mixed $signalement
+     */
+    public function setSignalement($signalement)
+    {
+        $this->signalement = $signalement;
     }
 
 

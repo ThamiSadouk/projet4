@@ -29,8 +29,18 @@
     <?php foreach ($data['comments'] as $comment) : ?>
         <p><strong><?= $comment->getAuthor();  ?></strong> le <?= $comment->getCommentDateFr(); ?></p>
         <p><?= nl2br($comment->getComment()); ?></p>
+    <?php if($comment->getSignalement()) : ?>
+        <h4>Ce commentaire est signalé</h4>
+     <?php else: ?>
+        <form action="" method="post">
+            <input type="submit" value="signaler">
+            <input type="hidden" value="<?= $comment->getId(); ?>" name="comment_signalement">
+        </form>
+    <?php endif; ?>
     <?php endforeach; ?>
 
     <?php $content = ob_get_clean(); ?>
+
+
 
     <?php require('template.php'); ?>

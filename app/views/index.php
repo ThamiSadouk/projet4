@@ -20,13 +20,13 @@
 
 <?php foreach($data['posts'] as $post) : ?>
     <div class="card card-body mt-3 mb-3">
-        <h4><?= htmlspecialchars($post->title) ?></h4>
+        <h4><?= $post->getTitle(); ?></h4>
         <div class="bg-light p-2 mb-3">
-            écrit par Thami le <?= $post->creation_date_fr ?>
+            écrit par Thami le <?= $post->getcreationDateFr(); ?>
         </div>
 
-        <p class="card-text"><?= nl2br(htmlspecialchars($post->content)) ?>        </p>
-        <a href="<?= URLROOT; ?>/pagesController/showPost/<?= htmlspecialchars($post->id) ?>" class="btn btn-dark">En savoir plus</a>
+        <p class="card-text"><?= nl2br($post->getContent()); ?> </p>
+        <a href="<?= URLROOT; ?>/pagesController/showPost/<?= $post->getId();  ?>" class="btn btn-dark">En savoir plus</a>
     </div>
 <?php endforeach; ?>
 <?php $content = ob_get_clean(); ?>

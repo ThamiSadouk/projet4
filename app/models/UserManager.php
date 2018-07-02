@@ -30,7 +30,7 @@ class UserManager extends Database
             ':email' => $email
         ));
 
-        $result = $stmt->fetch();
+        $result = $stmt->fetch(PDO::FETCH_OBJ);
 
         $hashed_password = $result->password;
         if(password_verify($password, $hashed_password)) {
@@ -72,7 +72,7 @@ class UserManager extends Database
             ':id' => $id
         ));
 
-        $result = $stmt->fetch();
+        $result = $stmt->fetch(PDO::FETCH_OBJ);
 
         return $result;
     }

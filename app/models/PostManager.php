@@ -7,15 +7,22 @@ class PostManager extends Database
 {
     public function getPosts()
     {
+        $posts = [];
         $db = $this->dbConnect();
         $req = $db->query('
           SELECT id, title, content, DATE_FORMAT(creation_date, \'%d/%m/%Y à %Hh%imin%ss\') 
-          AS creation_date_fr 
+          AS creationDateFr
           FROM posts 
           ORDER BY creation_date 
           DESC LIMIT 0, 5');
 
-        $posts = $req->fetchAll();
+        $data = $req->fetchAll();
+        if(!is_bool($data)) {
+            foreach ($data as $info) {
+                // retourne objet comments avec en paramètres les données récupérées dans $comments
+                $posts[] =  new Post($info);
+            }
+        }
         return $posts;
     }
 
@@ -27,7 +34,7 @@ class PostManager extends Database
         FROM posts WHERE id = ?');
 
         $req->execute(array($postId));
-        $data = $req->fetch(PDO::FETCH_ASSOC);
+        $data = $req->fetch();
 
         // si la varialble n'est pas un booléen, retourne une class post avec en paramètres les données récupérées dans $post
         if(!is_bool($data)) {
@@ -39,27 +46,23 @@ class PostManager extends Database
 
     public function getComments($postId)
     {
+        $comments = [];
         $db = $this->dbConnect();
         $stmt = $db->prepare('
-          SELECT id, author, comment, DATE_FORMAT(commentDate, \'%d/%m/%Y à %Hh%imin%ss\') AS commentDateFr 
+          SELECT id, author, comment, signalement, DATE_FORMAT(commentDate, \'%d/%m/%Y à %Hh%imin%ss\') AS commentDateFr 
           FROM comments 
           WHERE postId = ? 
           ORDER BY commentDate DESC
     ');
         $stmt->execute(array($postId));
-        /*$data = $stmt->fetchAll();
-
-        $comment =  new Comment($data);
-        var_dump($comment);
-        die();*/
-        while ($data = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        $data = $stmt->fetchAll();
+        if(!is_bool($data)) {
+            foreach ($data as $info) {
             // retourne objet comments avec en paramètres les données récupérées dans $comments
-            if(!is_bool($data)) {
-                $comment =  new Comment($data);
-                return $comment;
+                $comments[] =  new Comment($info);
             }
         }
-        return $data;
+        return $comments;
     }
 
     public function addPost($data)
