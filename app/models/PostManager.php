@@ -1,20 +1,28 @@
 <?php
 
+
 use \App\Libraries\Database;
 
 class PostManager extends Database
 {
     public function getPosts()
     {
+        $posts = [];
         $db = $this->dbConnect();
         $req = $db->query('
           SELECT id, title, content, DATE_FORMAT(creation_date, \'%d/%m/%Y à %Hh%imin%ss\') 
-          AS creation_date_fr 
+          AS creationDateFr
           FROM posts 
           ORDER BY creation_date 
           DESC LIMIT 0, 5');
 
-        $posts = $req->fetchAll();
+        $data = $req->fetchAll();
+        if(!is_bool($data)) {
+            foreach ($data as $info) {
+                // retourne objet comments avec en paramètres les données récupérées dans $comments
+                $posts[] =  new Post($info);
+            }
+        }
         return $posts;
     }
 
@@ -22,27 +30,38 @@ class PostManager extends Database
     {
         $db = $this->dbConnect();
         $req = $db->prepare('
-        SELECT id, title, content, DATE_FORMAT(creation_date, \'%d/%m/%Y à %Hh%imin%ss\') creation_date_fr 
+        SELECT id, title, content, DATE_FORMAT(creation_date, \'%d/%m/%Y à %Hh%imin%ss\') creationDateFr
         FROM posts WHERE id = ?');
 
         $req->execute(array($postId));
-        $post = $req->fetch();
+        $data = $req->fetch();
 
-        return $post;
+        // si la varialble n'est pas un booléen, retourne une class post avec en paramètres les données récupérées dans $post
+        if(!is_bool($data)) {
+            $post =  new Post($data);
+            return $post;
+        }
+        return $data;
     }
 
     public function getComments($postId)
     {
+        $comments = [];
         $db = $this->dbConnect();
         $stmt = $db->prepare('
-          SELECT id, author, comment, DATE_FORMAT(comment_date, \'%d/%m/%Y à %Hh%imin%ss\') AS comment_date_fr 
+          SELECT id, author, comment, signalement, DATE_FORMAT(commentDate, \'%d/%m/%Y à %Hh%imin%ss\') AS commentDateFr 
           FROM comments 
-          WHERE post_id = ? 
-          ORDER BY comment_date DESC
+          WHERE postId = ? 
+          ORDER BY commentDate DESC
     ');
         $stmt->execute(array($postId));
-        $comments = $stmt->fetchAll();
-
+        $data = $stmt->fetchAll();
+        if(!is_bool($data)) {
+            foreach ($data as $info) {
+            // retourne objet comments avec en paramètres les données récupérées dans $comments
+                $comments[] =  new Comment($info);
+            }
+        }
         return $comments;
     }
 
