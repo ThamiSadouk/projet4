@@ -1,3 +1,5 @@
+<?php $title = SITENAME; ?>
+
 <?php ob_start(); ?>
 
     <div class="row">

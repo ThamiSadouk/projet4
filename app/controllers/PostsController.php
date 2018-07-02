@@ -6,6 +6,11 @@ class PostsController extends BaseController
     public function __construct()
     {
         // Vérifie si l'id de session du user existe. Si retourne vrai, cela veut dire qu'on est connecté sinon on redirige.
+        if(!isLoggedIn())
+        {
+            header('location: ' . URLROOT . '/usersController/login');
+        }
+
         $this->postModel = $this->loadModel('PostManager');
         $this->userModel = $this->loadModel('UserManager');
     }
@@ -57,14 +62,14 @@ class PostsController extends BaseController
         }
     }
 
-    public function edit($postId)
+    public function edit($id)
     {
         if($_SERVER['REQUEST_METHOD'] == 'POST') {
             // sanitize post array
             $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
 
             $data = [
-                'postId' => $postId,
+                'id' => $id,
                 'user_id' => $_SESSION['user_id'],
                 'title' => trim($_POST['title']),
                 'content' => trim($_POST['content']),
@@ -96,16 +101,16 @@ class PostsController extends BaseController
             }
         }else {
             // obtient le billet existant depuis le model
-            $post = $this->postModel->getPostById($postId);
+            $post = $this->postModel->getPostById($id);
 
             // Vérifie que l'auteur du post correspond avec l'utilisateur connecté
-            if($post->user_id !== $_SESSION['user_id']) {
-                header('Location: index');
+            if($post->getUserId() != $_SESSION['user_id']) {
+                header('Location: '. URLROOT);
             }
             $data = [
-                'postId' => $postId,
-                'title' => $post->title,
-                'content' => $post->body
+                'id' => $id,
+                'title' => $post->getTitle(),
+                'content' => $post->getContent()
             ];
 
             $this->loadView('editPost', $data);
@@ -118,14 +123,14 @@ class PostsController extends BaseController
             // obtient le post existant depuis le model
             $post = $this->postModel->getPostById($postId);
             // vérifie que l'auteur du post correspond avec l'utilisateur connecté
-            if($post->user_id != $_SESSION['user_id']) {
+            if($post->getUserId() != $_SESSION['user_id']) {
                 header('Location: ' . URLROOT);
             }
             if($this->postModel->deletePost($postId)) {
-                flash('post_message', 'Post Removed');
+                flash('post_message', 'La Billet a été supprimé');
                 header('Location: ' . URLROOT);
             } else {
-                die('Something went wrong');
+                die('la méthode delePost n\'a pas été appelé');
             }
         } else {
             header('Location: ' . URLROOT);

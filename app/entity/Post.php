@@ -8,6 +8,7 @@ class Post
 {
     use HydratorTrait;
     private $id;
+    private $userId;
     private $title;
     private $content;
     private $creationDateFr;
@@ -30,7 +31,24 @@ class Post
      */
     public function setId($id)
     {
+        $id = (int) $id;
         $this->id = $id;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUserId()
+    {
+        return $this->userId;
+    }
+
+    /**
+     * @param mixed $userId
+     */
+    public function setUserId($userId)
+    {
+        $this->userId = $userId;
     }
 
     /**

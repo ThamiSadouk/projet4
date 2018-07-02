@@ -7,7 +7,7 @@
         <?php flash('register_success'); ?>
         <h2>Modifier un billet</h2>
         <p>Ecrivez un nouveau billet à l'aide du formulaire</p>
-        <form action="<?= URLROOT; ?>/postsController/add" method="post">
+        <form action="<?= URLROOT; ?>/postsController/edit/<?= $data['id'];  ?>" method="post">
             <div class="form-group">
                 <label for="title">Titre: <sup>*</sup></label>
                 <input type="text" name="title" class="form-control form-control-lg <?= (!empty($data['title_err'])) ? 'is-invalid' : ''; ?>" value="<?= $data['title']; ?>">

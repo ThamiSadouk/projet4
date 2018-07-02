@@ -48,6 +48,7 @@ class Comment
      */
     public function setPostId($postId)
     {
+        $postId = (int) $postId;
         $this->postId = $postId;
     }
 
@@ -94,7 +95,7 @@ class Comment
     /**
      * @param mixed $commentDateFr
      */
-    public function setCommentDate($commentDateFr)
+    public function setCommentDateFr($commentDateFr)
     {
         $this->commentDateFr = $commentDateFr;
         ;

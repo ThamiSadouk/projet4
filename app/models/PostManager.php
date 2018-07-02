@@ -30,8 +30,9 @@ class PostManager extends Database
     {
         $db = $this->dbConnect();
         $req = $db->prepare('
-        SELECT id, title, content, DATE_FORMAT(creation_date, \'%d/%m/%Y à %Hh%imin%ss\') creationDateFr
-        FROM posts WHERE id = ?');
+            SELECT id, user_id 
+            AS userId, title, content, DATE_FORMAT(creation_date, \'%d/%m/%Y à %Hh%imin%ss\') creationDateFr
+            FROM posts WHERE id = ?');
 
         $req->execute(array($postId));
         $data = $req->fetch();
@@ -44,26 +45,50 @@ class PostManager extends Database
         return $data;
     }
 
-    public function getComments($postId)
+    /*public function getComments($postId)
     {
         $comments = [];
         $db = $this->dbConnect();
         $stmt = $db->prepare('
-          SELECT id, author, comment, signalement, DATE_FORMAT(commentDate, \'%d/%m/%Y à %Hh%imin%ss\') AS commentDateFr 
+          SELECT id, author, comment, DATE_FORMAT(commentDate, \'%d/%m/%Y à %Hh%imin%ss\') AS commentDateFr, signalement
           FROM comments 
           WHERE postId = ? 
-          ORDER BY commentDate DESC
+          ORDER BY commentDateFr DESC
     ');
         $stmt->execute(array($postId));
         $data = $stmt->fetchAll();
+
         if(!is_bool($data)) {
             foreach ($data as $info) {
             // retourne objet comments avec en paramètres les données récupérées dans $comments
                 $comments[] =  new Comment($info);
             }
         }
+
+        var_dump($comments);
+        die();
+
         return $comments;
-    }
+    }*/
+
+        public function getComments($postId)
+        {
+            $comments = [];
+            $db = $this->dbConnect();
+            $stmt = $db->prepare('
+          SELECT id, author, comment, DATE_FORMAT(commentDate, \'%d/%m/%Y à %Hh%imin%ss\') AS commentDateFr, signalement
+          FROM comments 
+          WHERE postId = ?
+          ORDER BY commentDateFr DESC
+    ');
+            $stmt->execute(array($postId));
+
+            while ($data = $stmt->fetch()) {
+                $comments[] = new Comment($data);
+            }
+
+            return $comments;
+        }
 
     public function addPost($data)
     {
@@ -79,5 +104,31 @@ class PostManager extends Database
         ));
 
         return $postAdded;
+    }
+
+    public function updatePost($data)
+    {
+        $db = $this->dbConnect();
+        $stmt = $db->prepare('
+          UPDATE posts 
+          SET title = :title, content = :content, creation_date = NOW()
+          WHERE id = :id');
+
+        $postEdited = $stmt->execute(array(
+            'id' => $data['id'],
+            'title' => $data['title'],
+            'content' => $data['content']
+        ));
+
+        return $postEdited;
+    }
+
+    public function deletePost($id)
+    {
+        $db = $this->dbConnect();
+        $stmt = $db->prepare('DELETE FROM posts WHERE id = :id');
+        $postDeleted = $stmt->execute(array('id' => $id));
+
+        return $postDeleted;
     }
 }

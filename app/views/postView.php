@@ -4,11 +4,21 @@
 
 <a href="<?= URLROOT; ?>" class="btn btn-light mt-4"><i class="fas fa-backward"></i> Retour</a>
 
-<div class="blog-post pt-3">
+<div class="blog-post">
     <h2 class="blog-post-title"><?= $data['post']->getTitle(); ?></h2>
     <p class="blog-post-meta"><?= $data['post']->getCreationDateFr(); ?></p>
     <p><?= $data['post']->getContent(); ?><br></p>
 </div>
+
+<?php if(isLoggedIn() && $data['post']->getUserId() == $_SESSION['user_id']) : ?>
+    <hr>
+    <div class="row justify-content-between">
+        <a href="<?= URLROOT; ?>/postsController/edit/<?= $data['post']->getId(); ?>" class="btn btn-dark">Modifier</a>
+        <form action="<?= URLROOT; ?>/postsController/delete/<?= $data['post']->getId(); ?>" method="post">
+            <input type="submit" value="Supprimer" class="btn btn-danger">
+        </form>
+    </div>
+<?php endif; ?>
 
 <div class="comments">
     <h3>Commentaires</h3>

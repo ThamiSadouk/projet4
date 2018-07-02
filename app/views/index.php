@@ -1,21 +1,21 @@
 <?php $title = SITENAME; ?>
 
 <?php ob_start(); ?>
-
-    <?php if(isset($_SESSION['user_id'])) : ?>
-    <div class="col-md-6">
-        <a href="<?= URLROOT; ?>/postsController/add" class="btn btn-primary pull-right">
-            <i class="fas fa-pencil-alt"></i> Ajouté billet
-        </a>
-    </div>
-    <?php else : ?>
-    <div class="jumbotron jumbotron-fluid text-center">
-        <div class="container">
-            <h1 class="display-3">Billet simple pour l'Alaska</h1>
-            <p class="lead">Publication par épisode en ligne du nouveau roman de l'écrivain et acteur Jean Forteroche.</p>
+    <?php flash('post_message'); ?>
+    <?php if(isLoggedIn()) : ?>
+        <div class="col-md-6">
+            <a href="<?= URLROOT; ?>/postsController/add" class="btn btn-primary pull-right">
+                <i class="fas fa-pencil-alt"></i> Ajouté billet
+            </a>
         </div>
-    </div>
-    <?php endif; ?>
+        <?php else : ?>
+        <div class="jumbotron jumbotron-fluid text-center">
+            <div class="container">
+                <h1 class="display-3">Billet simple pour l'Alaska</h1>
+                <p class="lead">Publication par épisode en ligne du nouveau roman de l'écrivain et acteur Jean Forteroche.</p>
+            </div>
+        </div>
+        <?php endif; ?>
 
 
 <?php foreach($data['posts'] as $post) : ?>

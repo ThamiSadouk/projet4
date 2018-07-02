@@ -10,7 +10,7 @@ class UsersController extends BaseController
         $this->userModel = $this->loadModel('UserManager');
     }
 
-    // s'occupe de charger le formulaire quand on se dirige dans la page register
+    // charge le formulaire quand on se dirige dans la page register
     // submit the form quand on fait une requête post
     public function register()
     {
