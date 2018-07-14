@@ -6,11 +6,12 @@ class CommentsController extends BaseController
 {
     public function __construct()
     {
-        $this->postModel = $this->loadModel('CommentManager');
+        $this->commentModel = $this->loadModel('CommentManager');
     }
 
     public function add($postId)
     {
+
         // sanitize post array
         $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
 
@@ -20,8 +21,9 @@ class CommentsController extends BaseController
             'comment' => trim($_POST['comment'])
         ];
 
-        if($this->postModel->addComment($data)) {
+        if($this->commentModel->addComment($data)) {
             header('location: ' . URLROOT . '/PagesController/showPost/' . $postId);
+
         } else {
             die('Le commentaire n\'a pas été ajouté');
         }

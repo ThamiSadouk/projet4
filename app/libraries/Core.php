@@ -16,14 +16,13 @@ class Core
 
     public function __construct()
     {
-        $this->url = $this->getUrl();
-        $this->getController();
-        $this->getMethod();
-        $this->getParams();
+            $this->url = $this->getUrl();
+            $this->getController();
+            $this->getMethod();
+            $this->getParams();
 
         // appelle la methode du controller sélectionné avec un paramètre
         call_user_func_array([$this->currentController, $this->currentMethod], $this->params);
-
     }
 
     //permet d'obtenir la valeur du paramètre url (le paramètre url est set dans .htaccess)

@@ -4,10 +4,10 @@ namespace App\Libraries;
 
 class Database
 {
-    private $host = 'localhost';
-    private $username = 'root';
-    private $password = 'root';
-    private $dbname = 'projet4';
+    private $host = DB_HOST;
+    private $username = DB_USER;
+    private $password = DB_PASS;
+    private $dbname = DB_NAME;
 
     protected function dbConnect() {
         try

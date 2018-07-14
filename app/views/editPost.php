@@ -1,4 +1,4 @@
-<?php $title = SITENAME; ?>
+<?php $title = $data['title']; ?>
 
 <?php ob_start(); ?>
 
@@ -10,12 +10,12 @@
         <form action="<?= URLROOT; ?>/postsController/edit/<?= $data['id'];  ?>" method="post">
             <div class="form-group">
                 <label for="title">Titre: <sup>*</sup></label>
-                <input type="text" name="title" class="form-control form-control-lg <?= (!empty($data['title_err'])) ? 'is-invalid' : ''; ?>" value="<?= $data['title']; ?>">
+                <input type="text" id="title" name="title" class="form-control form-control-lg <?= (!empty($data['title_err'])) ? 'is-invalid' : ''; ?>" value="<?= $data['title']; ?>">
                 <span class="invalid-feedback"><?= $data['title_err']; ?></span>
             </div>
             <div class="form-group">
-                <label for="content">Content: <sup>*</sup></label>
-                <textarea name="content" class="form-control form-control-lg <?= (!empty($data['content_err'])) ? 'is-invalid' : ''; ?>"><?= $data['content']; ?></textarea>
+                <label for="content">Contenu: <sup>*</sup></label>
+                <textarea class="tinymce" id="content" name="content" class="form-control form-control-lg <?= (!empty($data['content_err'])) ? 'is-invalid' : ''; ?>"><?= $data['content']; ?></textarea>
                 <span class="invalid-feedback"><?= $data['content_err']; ?></span>
             </div>
             <input type="submit" class="btn btn-success" value="Publier">

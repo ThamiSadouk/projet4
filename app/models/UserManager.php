@@ -1,4 +1,5 @@
 <?php
+
 use \App\Libraries\Database;
 
 class UserManager extends Database
@@ -50,6 +51,24 @@ class UserManager extends Database
                       FROM members 
                       WHERE email = :email');
         $stmt->execute(array(':email' => $email));
+        $row = $stmt->rowCount();
+        // vérifie si l'email est déjà enregistré dans la db
+        if($row > 0) {
+            return true; // l'email existe déjà
+        } else {
+            return false;
+        }
+    }
+
+    // trouve l'utilisateur par mail
+    public function findUserByName($name)
+    {
+        $db = $this->dbConnect();
+        $stmt = $db->prepare(
+            'SELECT * 
+                      FROM members 
+                      WHERE name = :name');
+        $stmt->execute(array(':name' => $name));
         $row = $stmt->rowCount();
         // vérifie si l'email est déjà enregistré dans la db
         if($row > 0) {

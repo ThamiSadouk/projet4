@@ -12,6 +12,7 @@
     <!-- Custom styles for this template -->
     <link href="https://fonts.googleapis.com/css?family=Playfair+Display:700,900" rel="stylesheet">
     <link href="<?= URLROOT; ?>/css/custom.css" rel="stylesheet">
+
     <title><?= $title ?></title>
 </head>
 
@@ -21,35 +22,45 @@
     -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-3">
         <div class="container">
+            <?php if(isset($_SESSION['user_id'])) : ?>
+            <a class="navbar-brand" href="<?= URLROOT; ?>">Administration</a>
+            <?php else : ?>
             <a class="navbar-brand" href="<?= URLROOT; ?>"><?= SITENAME; ?></a>
+            <?php endif; ?>
+
+
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
-            <div class="collapse navbar-collapse" id="navbarsExampleDefault">
-                <ul class="navbar-nav mr-auto">
+            <div class="collapse navbar-collapse">
+                <?php if(isLoggedIn()) : ?>
+                <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="<?= URLROOT; ?>">Accueil</a>
+                        <a class="nav-link" href="<?= URLROOT; ?>/postsController/add"><i class="fas fa-pencil-alt fa-lg"></i></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="<?= URLROOT; ?>/dashboardController/dashboard"><i class="fas fa-cog fa-lg"></i></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="<?= URLROOT; ?>/usersController/logout">Déconnexion</a>
                     </li>
                 </ul>
-
-                <ul class="navbar-nav ml-auto">
-                    <?php if(isset($_SESSION['user_id'])) : ?>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Bienvenue <?= $_SESSION['user_name']; ?></a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="<?= URLROOT; ?>/usersController/logout">Logout</a>
-                        </li>
                     <?php else : ?>
+                    <ul class="navbar-nav mr-auto">
                         <li class="nav-item">
-                            <a class="nav-link" href="<?= URLROOT; ?>/usersController/register">Register</a>
+                            <a class="nav-link" href="<?= URLROOT; ?>">Accueil</a>
+                        </li>
+                    </ul>
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="<?= URLROOT; ?>/usersController/register">S'inscrire</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="<?= URLROOT; ?>/usersController/login">Login</a>
+                            <a class="nav-link" href="<?= URLROOT; ?>/usersController/login">Se connecter</a>
                         </li>
-                    <?php endif; ?>
-                </ul>
+                    </ul>
+                <?php endif; ?>
 
             </div>
         </div>
@@ -65,5 +76,9 @@
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+
+    <script type="text/javascript" src="<?= URLROOT; ?>/js/tinymce/tinymce.min.js"></script>
+    <script type="text/javascript" src="<?= URLROOT; ?>/js/tinymce/jquery.tinymce.min.js"></script>
+    <script type="text/javascript" src="<?= URLROOT; ?>/js/tinymce/initTinymce.js"></script>
 </body>
 </html>

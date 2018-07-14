@@ -4,14 +4,14 @@
 
 <a href="<?= URLROOT; ?>" class="btn btn-light mt-4"><i class="fas fa-backward"></i> Retour</a>
 
-<div class="blog-post">
+<div class="blog-post mb-3">
     <h2 class="blog-post-title"><?= $data['post']->getTitle(); ?></h2>
     <p class="blog-post-meta"><?= $data['post']->getCreationDateFr(); ?></p>
     <p><?= $data['post']->getContent(); ?><br></p>
 </div>
+<hr>
 
 <?php if(isLoggedIn() && $data['post']->getUserId() == $_SESSION['user_id']) : ?>
-    <hr>
     <div class="row justify-content-between">
         <a href="<?= URLROOT; ?>/postsController/edit/<?= $data['post']->getId(); ?>" class="btn btn-dark">Modifier</a>
         <form action="<?= URLROOT; ?>/postsController/delete/<?= $data['post']->getId(); ?>" method="post">
@@ -38,11 +38,11 @@
 
     <?php foreach ($data['comments'] as $comment) : ?>
         <p><strong><?= $comment->getAuthor();  ?></strong> le <?= $comment->getCommentDateFr(); ?></p>
-        <p><?= nl2br($comment->getComment()); ?></p>
+        <p><?= $comment->getComment(); ?></p>
     <?php if($comment->getSignalement()) : ?>
         <h4>Ce commentaire est signalé</h4>
      <?php else: ?>
-        <form action="" method="post">
+        <form action="<?= URLROOT; ?>/PagesController/showPost/<?= $data['post']->getId(); ?>" method="post">
             <input type="submit" value="signaler">
             <input type="hidden" value="<?= $comment->getId(); ?>" name="comment_signalement">
         </form>

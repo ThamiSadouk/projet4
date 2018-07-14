@@ -34,16 +34,20 @@ class UsersController extends BaseController
             if(empty($data['email'])) {
                 $data['email_err'] = 'Veuillez entrer un email';
             } else {
-
-                // check email
+                // vérifie si l'email existe déjà
                 if($this->userModel->findUserByEmail($data['email'])) {
-                    $data['email_err'] = 'L\'email existe déjà';
+                    $data['email_err'] = 'L\'email est déjà utilisé';
                 }
             }
 
             // Valider nom
             if(empty($data['name'])) {
                 $data['name_err'] = 'Veuillez entrer un nom d\'utilisateur';
+            } else {
+                // vérifie si le nom existe déjà
+                if($this->userModel->findUserByName($data['name'])) {
+                    $data['name_err'] = 'Le pseudo déjà utilisé';
+                }
             }
 
             // Valider mp
@@ -97,7 +101,7 @@ class UsersController extends BaseController
         }
     }
 
-        public function login() {
+    public function login() {
         // check for POST : si la méthode de requête POST est utilisé
         if($_SERVER['REQUEST_METHOD'] == 'POST') {
             // Process form
@@ -158,11 +162,11 @@ class UsersController extends BaseController
         }
     }
 
-        /*
-         * Set the user datas from the db to a SESSION variable
-         * $user vient de la méthode login du modele UserManager qui renvoie $row (cette variable contients les details du user)
-         */
-        public function createUserSession($user)
+    /*
+     * Set the user datas from the db to a SESSION variable
+     * $user vient de la méthode login du modele UserManager qui renvoie $row (cette variable contients les details du user)
+     */
+    public function createUserSession($user)
     {
         $_SESSION['user_id'] = $user->id;
         $_SESSION['user_email'] = $user->email;
@@ -170,12 +174,12 @@ class UsersController extends BaseController
         header('Location: ' . URLROOT);
     }
 
-        /*
-         * unset the sessions variables
-         * destroy the global variable
-         * redirect to the login page
-         */
-        public function logout()
+    /*
+     * unset the sessions variables
+     * destroy the global variable
+     * redirect to the login page
+     */
+    public function logout()
     {
         unset($_SESSION['user_id']);
         unset($_SESSION['user_email']);

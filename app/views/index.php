@@ -25,7 +25,7 @@
             écrit par Thami le <?= $post->getcreationDateFr(); ?>
         </div>
 
-        <p class="card-text"><?= nl2br($post->getContent()); ?> </p>
+        <p class="card-text"><?= $post->getContent(); ?> </p>
         <a href="<?= URLROOT; ?>/pagesController/showPost/<?= $post->getId();  ?>" class="btn btn-dark">En savoir plus</a>
     </div>
 <?php endforeach; ?>

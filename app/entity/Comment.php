@@ -20,7 +20,7 @@ class Comment
     }
 
     /**
-     * @return mixed
+     * @return int
      */
     public function getId()
     {
@@ -28,7 +28,7 @@ class Comment
     }
 
     /**
-     * @param mixed $id
+     * @param int $id
      */
     public function setId($id)
     {
@@ -57,7 +57,7 @@ class Comment
      */
     public function getAuthor()
     {
-        return htmlspecialchars($this->author);
+        return $this->author;
     }
 
     /**

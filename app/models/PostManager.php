@@ -1,6 +1,5 @@
 <?php
 
-
 use \App\Libraries\Database;
 
 class PostManager extends Database
@@ -45,68 +44,42 @@ class PostManager extends Database
         return $data;
     }
 
-    /*public function getComments($postId)
+    public function getComments($postId)
     {
         $comments = [];
         $db = $this->dbConnect();
         $stmt = $db->prepare('
-          SELECT id, author, comment, DATE_FORMAT(commentDate, \'%d/%m/%Y à %Hh%imin%ss\') AS commentDateFr, signalement
-          FROM comments 
-          WHERE postId = ? 
-          ORDER BY commentDateFr DESC
-    ');
+      SELECT id, author, comment, DATE_FORMAT(commentDate, \'%d/%m/%Y à %Hh%imin%ss\') AS commentDateFr, signalement
+      FROM comments 
+      WHERE postId = ?
+      ORDER BY commentDateFr DESC
+');
         $stmt->execute(array($postId));
-        $data = $stmt->fetchAll();
 
-        if(!is_bool($data)) {
-            foreach ($data as $info) {
-            // retourne objet comments avec en paramètres les données récupérées dans $comments
-                $comments[] =  new Comment($info);
-            }
+        while ($data = $stmt->fetch()) {
+            $comments[] = new Comment($data);
         }
-
-        var_dump($comments);
-        die();
 
         return $comments;
-    }*/
+    }
 
-        public function getComments($postId)
-        {
-            $comments = [];
-            $db = $this->dbConnect();
-            $stmt = $db->prepare('
-          SELECT id, author, comment, DATE_FORMAT(commentDate, \'%d/%m/%Y à %Hh%imin%ss\') AS commentDateFr, signalement
-          FROM comments 
-          WHERE postId = ?
-          ORDER BY commentDateFr DESC
-    ');
-            $stmt->execute(array($postId));
-
-            while ($data = $stmt->fetch()) {
-                $comments[] = new Comment($data);
-            }
-
-            return $comments;
-        }
-
-    public function addPost($data)
+    public function addPost(Post $post)
     {
         $db = $this->dbConnect();
         $stmt = $db->prepare('
-        INSERT INTO posts (title, user_id, content, creation_date)
-        VALUES (:title, :user_id, :content, NOW())');
+          INSERT INTO posts (title, user_id, content, creation_date)
+          VALUES (:title, :user_id, :content, NOW())');
 
-        $postAdded= $stmt->execute(array(
-            'title' => $data['title'],
-            'user_id' => $data['user_id'],
-            'content' => $data['content']
-        ));
+        $stmt->bindValue(':title', $post->getTitle());
+        $stmt->bindValue(':user_id', $post->getUserId(), PDO::PARAM_INT);
+        $stmt->bindValue(':content', $post->getContent());
+
+        $postAdded =  $stmt->execute();
 
         return $postAdded;
     }
 
-    public function updatePost($data)
+    public function updatePost(Post $post)
     {
         $db = $this->dbConnect();
         $stmt = $db->prepare('
@@ -114,11 +87,11 @@ class PostManager extends Database
           SET title = :title, content = :content, creation_date = NOW()
           WHERE id = :id');
 
-        $postEdited = $stmt->execute(array(
-            'id' => $data['id'],
-            'title' => $data['title'],
-            'content' => $data['content']
-        ));
+        $stmt->bindValue(':id', $post->getId(), PDO::PARAM_INT);
+        $stmt->bindValue(':title', $post->getTitle());
+        $stmt->bindValue(':content', $post->getContent());
+
+        $postEdited = $stmt->execute();
 
         return $postEdited;
     }

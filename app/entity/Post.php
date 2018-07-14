@@ -56,7 +56,7 @@ class Post
      */
     public function getTitle()
     {
-        return$this->title;
+        return htmlspecialchars($this->title);
     }
 
     /**

@@ -1,4 +1,5 @@
 <?php
+
 use App\Libraries\BaseController;
 
 class PostsController extends BaseController
@@ -15,15 +16,11 @@ class PostsController extends BaseController
         $this->userModel = $this->loadModel('UserManager');
     }
 
-
-    public function add()
-    {
+    public function add() {
         if($_SERVER['REQUEST_METHOD'] == 'POST') {
-            // sanitize post array
-            $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
 
             $data = [
-                'user_id' => $_SESSION['user_id'],
+                'userId' => $_SESSION['user_id'],
                 'title' => trim($_POST['title']),
                 'content' => trim($_POST['content']),
                 'title_err' => '',
@@ -38,13 +35,13 @@ class PostsController extends BaseController
                 $data['content_err'] = 'Veuillez entrer du contenu';
             }
 
-            // vérifie si il n'y a pas d'erreur
             if(empty($data['title_err']) && empty($data['content_err'])) {
                 // valider
-                if($this->postModel->addPost($data)) {
+                $post = new Post($data);
+
+                if($this->postModel->addPost($post)) {
                     flash('post_message', 'Billet ajouté');
                     header('Location: ' . URLROOT);
-
                 } else {
                     die('une erreur est survenue');
                 }
@@ -65,12 +62,10 @@ class PostsController extends BaseController
     public function edit($id)
     {
         if($_SERVER['REQUEST_METHOD'] == 'POST') {
-            // sanitize post array
-            $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
 
             $data = [
                 'id' => $id,
-                'user_id' => $_SESSION['user_id'],
+                'userId' => $_SESSION['user_id'],
                 'title' => trim($_POST['title']),
                 'content' => trim($_POST['content']),
                 'title_err' => '',
@@ -88,7 +83,9 @@ class PostsController extends BaseController
             // vérifie si il n'y a pas d'erreur
             if(empty($data['title_err']) && empty($data['content_err'])) {
                 // valider
-                if($this->postModel->updatePost($data)) {
+                $post = new Post($data);
+
+                if($this->postModel->updatePost($post)) {
                     flash('post_message', 'Le billet a été mis à jour');
                     header('Location: ' . URLROOT);
 
