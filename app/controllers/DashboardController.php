@@ -1,6 +1,10 @@
 <?php
 
-class DashboardController extends \App\Libraries\BaseController
+namespace App\Controllers;
+
+use \App\Libraries\BaseController;
+
+class DashboardController extends BaseController
 {
     public function __construct()
     {
@@ -11,9 +15,16 @@ class DashboardController extends \App\Libraries\BaseController
     {
         if(isLoggedIn()) {
             $tables = $this->boardModel->inTable();
+
+            $traduction = [
+                'comments' => 'commentaires',
+                'members' => 'Administrateur',
+                'posts' => 'billets'
+                ];
             $comments = $this->boardModel->getComments();
 
             $data = [
+                'traduction' => $traduction,
                 'tables' => $tables,
                 'comments' => $comments
             ];
@@ -37,15 +48,15 @@ class DashboardController extends \App\Libraries\BaseController
 
     public function delete($id)
     {
-        if($_SERVER['REQUEST_METHOD'] == 'POST') {
-            if($this->boardModel->deleteComment($id)) {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            if ($this->boardModel->deleteComment($id)) {
                 flash('post_message', 'Le commentaire a été supprimé');
                 header('Location: ' . URLROOT . '/dashboardController/dashboard');
             } else {
                 die('une erreur s\'est produite');
             }
         } else {
-            header('Location: ' . URLROOT . '/dashboardController/dashboard');
+            header('Location: ' . URLROOT);
         }
     }
 }

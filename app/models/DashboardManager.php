@@ -10,44 +10,41 @@ class DashboardManager extends \App\Libraries\Database
      */
     public function inTable()
     {
-        $db = $this->dbConnect();
-        $stmt = $db->query(
+        $stmt = $this->pdo->query(
             "SELECT 'members', COUNT(*)
-                      FROM members 
-                      UNION 
-                      SELECT 'posts', COUNT(*)
-                      FROM posts
-                      UNION
-                      SELECT 'comments', COUNT(*)
-                      FROM comments");
+            FROM members 
+            UNION 
+            SELECT 'posts', COUNT(*)
+            FROM posts
+            UNION
+            SELECT 'comments', COUNT(*)
+            FROM comments");
         $data = $stmt->fetchAll();
         return $data;
     }
 
     /**
      * renvoie les commentaires qui ont été signalés
-     * @return array
+     * @return array mixed
      */
     public function getComments()
     {
-        $db = $this->dbConnect();
-        $stmt = $db->query(
+        $stmt = $this->pdo->query(
             "SELECT 
-                        comments.id, 
-                        comments.postId, 
-                        comments.author, 
-                        comments.comment, 
-                        DATE_FORMAT(comments.commentDate, '%d/%m/%Y à %Hh%imin%ss') AS commentDateFr, 
-                        posts.title
-                      FROM comments
-                      JOIN posts
-                      ON  comments.postId = posts.id
-                      WHERE comments.signalement = true 
-                      ORDER BY comments.commentDate DESC
-                      ");
+            comments.id, 
+            comments.postId, 
+            comments.author, 
+            comments.comment, 
+            comments.signalement,
+            DATE_FORMAT(comments.commentDate, '%d/%m/%Y à %Hh%imin%ss') AS commentDateFr, 
+            posts.title
+            FROM comments
+            JOIN posts
+            ON  comments.postId = posts.id
+            ORDER BY comments.signalement DESC");
 
         $results = $stmt->fetchAll(PDO::FETCH_OBJ);
-
+//WHERE comments.signalement = true
         return $results;
     }
 
@@ -59,8 +56,7 @@ class DashboardManager extends \App\Libraries\Database
      */
     public function deleteComment($id)
     {
-        $db = $this->dbConnect();
-        $stmt = $db->prepare('DELETE FROM Comments WHERE id = :id');
+        $stmt = $this->pdo->prepare('DELETE FROM Comments WHERE id = :id');
         $commentDeleted = $stmt->execute(array('id' => $id));
 
         return $commentDeleted;
@@ -72,9 +68,9 @@ class DashboardManager extends \App\Libraries\Database
      * @param $id int
      * @return bool
      */
-    public function seeComment($id) {
-        $db =   $this->dbConnect();
-        $stmt = $db->prepare('
+    public function seeComment($id)
+    {
+        $stmt = $this->pdo->prepare('
             UPDATE comments SET  signalement = false WHERE id = ?
         ');
         return $stmt->execute(array($id));

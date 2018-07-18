@@ -1,5 +1,7 @@
 <?php
 
+namespace App\Controllers;
+
 use \App\Libraries\BaseController;
 
 class UsersController extends BaseController
@@ -8,6 +10,64 @@ class UsersController extends BaseController
     {
         // charge UserManager
         $this->userModel = $this->loadModel('UserManager');
+    }
+
+    public function login() {
+        // check for POST : si la méthode de requête POST est utilisé
+        if($_SERVER['REQUEST_METHOD'] == 'POST') {
+            // Process form
+            // Sanitize POST data
+            $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+            // Init data
+            $data = [
+                'email' => trim($_POST['email']),
+                'password' => trim($_POST['password']),
+                'email_err' => '',
+                'password_err' => '',
+            ];
+
+            // Valider email
+            if(empty($data['email'])) {
+                $data['email_err'] = 'Veuillez entrer un email';
+            } elseif($this->userModel->findUserByEmail($data['email'])) { // Check for user/email
+                // User found
+            } else {
+                // User not found
+                $data['email_err'] = 'Aucun utilisateur trouvé';
+            }
+
+            // Valider mp
+            if(empty($data['password'])) {
+                $data['password_err'] = 'Veuillez entrer un mot de passe';
+            }
+
+            // vérifie si il n'y a pas d'erreurs
+            if(empty($data['email_err']) && empty($data['password_err'])) {
+                // valider
+                // check et set loggedInUser
+                $loggedInUser = $this->userModel->login($data['email'], $data['password']);
+
+                if($loggedInUser) {
+                    // créé session
+                    $this->createUserSession($loggedInUser);
+                } else {
+                    $data['password_err'] = 'mot de passe incorrect';
+                    $this->loadView('login', $data);
+                }
+            } else {
+                // charge view errors
+                $this->loadView('login', $data);
+            }
+        } else {
+            // init data : on place les données de l'utilisateur dans un tableau en cas d'erreur de saisie, les données précédentes sont renvoyées
+            $data = [
+                'email' => '',
+                'password' => '',
+                'email_err' => '',
+                'password_err' => '',
+            ];
+            $this->loadView('login', $data);
+        }
     }
 
     // charge le formulaire quand on se dirige dans la page register
@@ -67,7 +127,6 @@ class UsersController extends BaseController
             // vérifie si il n'y a pas d'erreurs
             if(empty($data['email_err']) && empty($data['name_err']) && empty($data['password_err']) && empty($data['confirm_password_err'])) {
                 // valider
-
                 // Hash password
                 $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
 
@@ -95,75 +154,12 @@ class UsersController extends BaseController
                 'password_err' => '',
                 'confirm_password_err' => ''
             ];
-
-            //load view
             $this->loadView('register', $data);
         }
     }
 
-    public function login() {
-        // check for POST : si la méthode de requête POST est utilisé
-        if($_SERVER['REQUEST_METHOD'] == 'POST') {
-            // Process form
-            // Sanitize POST data
-            $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
-            // Init data
-            $data = [
-                'email' => trim($_POST['email']),
-                'password' => trim($_POST['password']),
-                'email_err' => '',
-                'password_err' => '',
-            ];
-
-            // Valider email
-            if(empty($data['email'])) {
-                $data['email_err'] = 'Veuillez entrer un email';
-            } elseif($this->userModel->findUserByEmail($data['email'])) { // Check for user/email
-                // User found
-            } else {
-                // User not found
-                $data['email_err'] = 'Aucun utilisateur trouvé';
-            }
-
-            // Valider mp
-            if(empty($data['password'])) {
-                $data['password_err'] = 'Veuillez entrer un mot de passe';
-            }
-
-            // vérifie si il n'y a pas d'erreurs
-            if(empty($data['email_err']) && empty($data['password_err'])) {
-                // valider
-                // check et set loggedInUser
-                $loggedInUser = $this->userModel->login($data['email'], $data['password']);
-
-                if($loggedInUser) {
-                    // créé session
-                    $this->createUserSession($loggedInUser);
-                } else {
-                    $data['password_err'] = 'mot de passe incorrect';
-                    $this->loadView('login', $data);
-                }
-            } else {
-                // charge view errors
-                $this->loadView('login', $data);
-            }
-
-        } else {
-            // init data : on place les données de l'utilisateur dans un tableau en cas d'erreur de saisie, les données précédentes sont renvoyées
-            $data = [
-                'email' => '',
-                'password' => '',
-                'email_err' => '',
-                'password_err' => '',
-            ];
-
-            //charge vue
-            $this->loadView('login', $data);
-        }
-    }
-
     /*
-     * Set the user datas from the db to a SESSION variable
+     * Set les données utilisateurs depuis la BDD à une variable SESSION
      * $user vient de la méthode login du modele UserManager qui renvoie $row (cette variable contients les details du user)
      */
     public function createUserSession($user)
@@ -175,9 +171,8 @@ class UsersController extends BaseController
     }
 
     /*
-     * unset the sessions variables
-     * destroy the global variable
-     * redirect to the login page
+     * unset sessions variables
+     * détruit la global variable
      */
     public function logout()
     {

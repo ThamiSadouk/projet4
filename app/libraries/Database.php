@@ -2,6 +2,11 @@
 
 namespace App\Libraries;
 
+
+/**
+ * Class Database Se connecte à la BDD
+ * @package App\Libraries
+ */
 class Database
 {
     private $host = DB_HOST;
@@ -9,17 +14,34 @@ class Database
     private $password = DB_PASS;
     private $dbname = DB_NAME;
 
-    protected function dbConnect() {
+    protected $pdo;
+
+    public function __construct()
+    {
+        $this->dbConnect();
+    }
+
+    /**
+     * gère la connection avec la BDD
+     * @return \PDO
+     */
+    private function dbConnect()
+    {
+        // set DSN
+        $dsn = 'mysql:host=' . $this->host . ';dbname=' . $this->dbname;
+        $options = [
+            \PDO::ATTR_PERSISTENT => true, // améliore les performances en cherchant si une connection est déjà établie avec la db
+            \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION
+        ];
+
         try
         {
-            // Déclaration d'une instance PDO
-            $db = new \PDO('mysql:host='.$this->host.';dbname='.$this->dbname.';charset=utf8', $this->username, $this->password, array(\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION));
-            // établit attribut 'fetch' en tant qu'objet
-            return $db;
+            $this->pdo = new \PDO($dsn, $this->username, $this->password, $options);
+            return $this->pdo;
         }
         catch(\Exception $e)
         {
-            die('Erreur : '.$e->getMessage());
+            die('Erreur : ' .$e->getMessage());
         }
     }
 }

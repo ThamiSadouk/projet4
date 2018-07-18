@@ -9,17 +9,17 @@ namespace App\Libraries;
  */
 class Core
 {
-    protected $currentController = 'PagesController'; // ce controllers sera exécuté par défaut
+    protected $currentController = 'PostsController'; // ce controllers sera exécuté par défaut
     protected $currentMethod = 'index';
     protected $params =[];
     protected $url;
 
     public function __construct()
     {
-            $this->url = $this->getUrl();
-            $this->getController();
-            $this->getMethod();
-            $this->getParams();
+        $this->url = $this->getUrl();
+        $this->getController();
+        $this->getMethod();
+        $this->getParams();
 
         // appelle la methode du controller sélectionné avec un paramètre
         call_user_func_array([$this->currentController, $this->currentMethod], $this->params);
@@ -48,8 +48,10 @@ class Core
 
         // Charge le controllers
         require_once '../app/controllers/' . $this->currentController . '.php';
+        // lien namespace
+        $Class = "\App\Controllers\\" .$this->currentController;
         // Instantiation du controllers appelé
-        $this->currentController = new $this->currentController;
+        $this->currentController = new $Class;
     }
 
     public function getMethod()

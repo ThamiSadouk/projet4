@@ -1,14 +1,21 @@
 <?php
 
 use \App\Libraries\Database;
+use \App\Entity\Post;
+use \App\Entity\Comment;
 
+/**
+ * Class PostManager
+ */
 class PostManager extends Database
 {
+    /**
+     * @return array mixed
+     */
     public function getPosts()
     {
         $posts = [];
-        $db = $this->dbConnect();
-        $req = $db->query('
+        $req = $this->pdo->query('
           SELECT id, title, content, DATE_FORMAT(creation_date, \'%d/%m/%Y à %Hh%imin%ss\') 
           AS creationDateFr
           FROM posts 
@@ -25,10 +32,13 @@ class PostManager extends Database
         return $posts;
     }
 
+    /**
+     * @param $postId int
+     * @return Post mixed
+     */
     public function getPostById($postId)
     {
-        $db = $this->dbConnect();
-        $req = $db->prepare('
+        $req = $this->pdo->prepare('
             SELECT id, user_id 
             AS userId, title, content, DATE_FORMAT(creation_date, \'%d/%m/%Y à %Hh%imin%ss\') creationDateFr
             FROM posts WHERE id = ?');
@@ -36,7 +46,7 @@ class PostManager extends Database
         $req->execute(array($postId));
         $data = $req->fetch();
 
-        // si la varialble n'est pas un booléen, retourne une class post avec en paramètres les données récupérées dans $post
+        // si la variable n'est pas un booléen, retourne une class post avec en paramètres les données récupérées dans $post
         if(!is_bool($data)) {
             $post =  new Post($data);
             return $post;
@@ -44,15 +54,19 @@ class PostManager extends Database
         return $data;
     }
 
+    /**
+     * @param $postId int
+     * @return array mixed
+     */
     public function getComments($postId)
     {
         $comments = [];
-        $db = $this->dbConnect();
-        $stmt = $db->prepare('
-      SELECT id, author, comment, DATE_FORMAT(commentDate, \'%d/%m/%Y à %Hh%imin%ss\') AS commentDateFr, signalement
-      FROM comments 
-      WHERE postId = ?
-      ORDER BY commentDateFr DESC
+        $stmt = $this->pdo->prepare('
+          SELECT id, author, comment, DATE_FORMAT(commentDate, \'%d/%m/%Y à %Hh%imin%ss\') 
+          AS commentDateFr, signalement
+          FROM comments 
+          WHERE postId = ?
+          ORDER BY commentDateFr DESC
 ');
         $stmt->execute(array($postId));
 
@@ -63,10 +77,13 @@ class PostManager extends Database
         return $comments;
     }
 
+    /**
+     * @param Post $post
+     * @return bool
+     */
     public function addPost(Post $post)
     {
-        $db = $this->dbConnect();
-        $stmt = $db->prepare('
+        $stmt = $this->pdo->prepare('
           INSERT INTO posts (title, user_id, content, creation_date)
           VALUES (:title, :user_id, :content, NOW())');
 
@@ -79,10 +96,13 @@ class PostManager extends Database
         return $postAdded;
     }
 
+    /**
+     * @param Post $post
+     * @return bool
+     */
     public function updatePost(Post $post)
     {
-        $db = $this->dbConnect();
-        $stmt = $db->prepare('
+        $stmt = $this->pdo->prepare('
           UPDATE posts 
           SET title = :title, content = :content, creation_date = NOW()
           WHERE id = :id');
@@ -96,10 +116,13 @@ class PostManager extends Database
         return $postEdited;
     }
 
+    /**
+     * @param $id
+     * @return bool
+     */
     public function deletePost($id)
     {
-        $db = $this->dbConnect();
-        $stmt = $db->prepare('DELETE FROM posts WHERE id = :id');
+        $stmt = $this->pdo->prepare('DELETE FROM posts WHERE id = :id');
         $postDeleted = $stmt->execute(array('id' => $id));
 
         return $postDeleted;

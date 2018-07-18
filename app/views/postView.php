@@ -21,28 +21,30 @@
 <?php endif; ?>
 
 <div class="comments">
-    <h3>Commentaires</h3>
-    <form action="<?= URLROOT; ?>/PagesController/showPost/<?= $data['post']->getId(); ?>" method="post">
-        <div>
-            <label for="author">Auteur</label><br />
-            <input type="text" id="author" name="author" />
+    <h3>Rédiger un commentaire</h3>
+
+    <form action="<?= URLROOT; ?>/postsController/showPost/<?= $data['post']->getId(); ?>" method="post">
+        <div class="form-group row">
+            <label for="author" class="sr-only">Auteur <sup>*</sup></label>
+            <input id="author" type="text" name="author" class="col-sm-4 form-control <?= (!empty($dataForm['author_err'])) ? 'is-invalid' : ''; ?>" value="<?= $dataForm['author']; ?>" placeholder="Auteur">
+            <span class="invalid-feedback"><?= $dataForm['author_err']; ?></span>
         </div>
-        <div>
-            <label for="comment">Commentaire</label><br />
-            <textarea id="comment" name="comment"></textarea>
+        <div class="form-group row">
+            <label for="comment" class="sr-only">Ecrire un commentaire <sup>*</sup></label>
+            <textarea id="comment" name="comment" rows="5" placeholder="Ecrire un commentaire" class="col-sm-4 form-control <?= (!empty($dataForm['comment_err'])) ? 'is-invalid' : ''; ?>"><?= $dataForm['comment']; ?></textarea>
+            <span class="invalid-feedback"><?= $dataForm['comment_err']; ?></span>
         </div>
-        <div>
-            <input type="submit" />
-        </div>
+        <input type="submit" class="btn btn-success" value="publier">
     </form>
 
+    <h3>Commentaires</h3>
     <?php foreach ($data['comments'] as $comment) : ?>
         <p><strong><?= $comment->getAuthor();  ?></strong> le <?= $comment->getCommentDateFr(); ?></p>
         <p><?= $comment->getComment(); ?></p>
     <?php if($comment->getSignalement()) : ?>
         <h4>Ce commentaire est signalé</h4>
      <?php else: ?>
-        <form action="<?= URLROOT; ?>/PagesController/showPost/<?= $data['post']->getId(); ?>" method="post">
+        <form action="<?= URLROOT; ?>/postsController/showPost/<?= $data['post']->getId(); ?>" method="post">
             <input type="submit" value="signaler">
             <input type="hidden" value="<?= $comment->getId(); ?>" name="comment_signalement">
         </form>

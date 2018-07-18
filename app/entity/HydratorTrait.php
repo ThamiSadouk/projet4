@@ -1,5 +1,7 @@
 <?php
 
+namespace App\Entity;
+
 /**
  * Trait HydratorTrait Assigne les valeurs récupérées dans la BDD aux attributs des objets Comment et Post
  */

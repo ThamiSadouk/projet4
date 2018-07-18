@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Libraries;
+namespace App;
 
 class Autoloader
 {
@@ -24,7 +24,7 @@ class Autoloader
             // supprime la chaine du namespace et remplace les antislash par des slash pour faire fonctionner le require
             $class = str_replace(__NAMESPACE__ . '\\', '', $class);
             $class = str_replace('\\', '/', $class);
-            require '../app/libraries/' . $class . '.php';
+            require __DIR__ . '/' . $class . '.php';
         }
 
     }

@@ -26,7 +26,7 @@
         </div>
 
         <p class="card-text"><?= $post->getContent(); ?> </p>
-        <a href="<?= URLROOT; ?>/pagesController/showPost/<?= $post->getId();  ?>" class="btn btn-dark">En savoir plus</a>
+        <a href="<?= URLROOT; ?>/postsController/showPost/<?= $post->getId();  ?>" class="btn btn-dark">En savoir plus</a>
     </div>
 <?php endforeach; ?>
 <?php $content = ob_get_clean(); ?>

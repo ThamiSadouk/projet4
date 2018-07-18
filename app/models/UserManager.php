@@ -2,14 +2,20 @@
 
 use \App\Libraries\Database;
 
+/**
+ * Class UserManager
+ */
 class UserManager extends Database
 {
+    /**
+     * @param $data mixed
+     * @return mixed
+     */
     public function register($data)
     {
-        $db = $this->dbConnect();
-        $stmt = $db->prepare(
+        $stmt = $this->pdo->prepare(
             'INSERT INTO members (name, email, password, registration_date) 
-                      VALUES (:name, :email, :password, NOW())');
+            VALUES (:name, :email, :password, NOW())');
         // bind values
         $registered = $stmt->execute(array(
             ':name' => $data['name'],
@@ -20,13 +26,15 @@ class UserManager extends Database
         return $registered;
     }
     // login User
+
+    /**
+     * @param $email
+     * @param $password string
+     * @return bool
+     */
     public function login($email, $password)
     {
-        $db = $this->dbConnect();
-        $stmt = $db->prepare(
-            'SELECT * 
-                      FROM members 
-                      WHERE email = :email ');
+        $stmt = $this->pdo->prepare('SELECT * FROM members WHERE email = :email');
         $stmt->execute(array(
             ':email' => $email
         ));
@@ -41,15 +49,15 @@ class UserManager extends Database
         }
     }
 
-    // trouve l'utilisateur par mail
+    /**
+     * Vérifie si l'email entré existe déjà dans la BDD
+     * @param $email string
+     * @return bool
+     */
     public function findUserByEmail($email)
     {
-        // appelle des methodes query et bind dans libraries/Controller
-        $db = $this->dbConnect();
-        $stmt = $db->prepare(
-            'SELECT * 
-                      FROM members 
-                      WHERE email = :email');
+        $stmt = $this->pdo->prepare('SELECT * FROM members WHERE email = :email');
+
         $stmt->execute(array(':email' => $email));
         $row = $stmt->rowCount();
         // vérifie si l'email est déjà enregistré dans la db
@@ -60,14 +68,15 @@ class UserManager extends Database
         }
     }
 
-    // trouve l'utilisateur par mail
+    /**
+     * Vérifie si le nom de l'utilisateur entré existe déjà dans la BDD
+     * @param $name string
+     * @return bool
+     */
     public function findUserByName($name)
     {
-        $db = $this->dbConnect();
-        $stmt = $db->prepare(
-            'SELECT * 
-                      FROM members 
-                      WHERE name = :name');
+        $stmt = $this->pdo->prepare('SELECT * FROM members WHERE name = :name');
+
         $stmt->execute(array(':name' => $name));
         $row = $stmt->rowCount();
         // vérifie si l'email est déjà enregistré dans la db
@@ -78,18 +87,16 @@ class UserManager extends Database
         }
     }
 
-    // trouve l'utilisateur par id
+    /**
+     * trouve l'utilisateur par id
+     * @param $id int
+     * @return mixed
+     */
     public function getUserById($id)
     {
-        // appelle des methodes query et bind dans libraries/Controller
-        $db = $this->dbConnect();
-        $stmt = $db->prepare(
-            'SELECT * 
-                      FROM members 
-                      WHERE id = :id');
-        $stmt->execute(array(
-            ':id' => $id
-        ));
+        $stmt = $this->pdo->prepare('SELECT * FROM members WHERE id = :id');
+
+        $stmt->execute(array(':id' => $id));
 
         $result = $stmt->fetch(PDO::FETCH_OBJ);
 
