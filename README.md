@@ -13,15 +13,23 @@ Une application de blog en php avec une base de données MySQL
 Vous pouvez télécharger [MAMP](https://www.mamp.info/en/downloads/) ou [WAMP](http://www.wampserver.com/) selon votre OS
 
 ### Installation 
-[Téléchargez]() ou [clonez]() le projet
+[Téléchargez]() ou [clonez](https://github.com/ThamiSadouk/projet4.git) le projet
 
-Ouvrez le dossier app/config pour insérer les paramètres de BDD suivants...
+Ouvrez le dossier app/config pour insérer les paramètres de votre BDD :
+
+DB_HOST : 'localhost'
+
+DB_USER : 'root'
+
+DB_PASS : 'root'
+
+DB_NAME : 'projet4'
 
 Vous pouvez vous connecter à cette adresse :
 
 [http://localhost:8888/projet4/usersController/login](http://localhost:8888/projet4/usersController/login) 
 
-Entrez les informations suivantes : 
+Entrez les informations suivantes pour vous connecter : 
 
 * email : thami.sadouk@outlook.fr
 * mot de passe : kikiki
