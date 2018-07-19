@@ -4,7 +4,7 @@
 
     <div class="row">
         <div class="col-md-6 mx-auto">
-            <div class="card card-body bg-light mt-5">
+            <div class="card card-body bg-light my-5">
                 <h2>Créer un compte administrateur</h2>
                 <p>Saisissez les informations demandées</p>
                 <form action="<?= URLROOT; ?>/usersController/register" method="post">
@@ -29,11 +29,8 @@
                         <span class="invalid-feedback"><?= $data['confirm_password_err']; ?></span>
                     </div>
                     <div class="row">
-                        <div class="col">
+                        <div class="col-md-4">
                             <input type="submit" value="valider" class="btn btn-success btn-block">
-                        </div>
-                        <div class="col">
-                            <a href="<?= URLROOT; ?>/usersController/login" class="btn btn-light btn-block">Vous avez un compte? Se connecter</a>
                         </div>
                     </div>
                 </form>

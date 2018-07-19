@@ -3,8 +3,8 @@
 <?php ob_start(); ?>
 
     <div class="row">
-        <div class="col-md-6 mx-auto">
-            <div class="card card-body bg-light mt-5">
+        <div class="col-md-6 mx-auto my-5">
+            <div class="card card-body bg-light my-5">
                 <?php flash('register_success'); ?>
                 <h2>Connection</h2>
                 <p>Connectez-vous à votre compte.</p>
@@ -20,11 +20,8 @@
                         <span class="invalid-feedback"><?= $data['password_err']; ?></span>
                     </div>
                     <div class="row">
-                        <div class="col">
+                        <div class="col-md-4">
                             <input type="submit" value="Login" class="btn btn-success btn-block">
-                        </div>
-                        <div class="col">
-                            <a href="<?= URLROOT; ?>/usersController/Register" class="btn btn-light btn-block">Pas de Compte? Connectez-vous</a>
                         </div>
                     </div>
                 </form>

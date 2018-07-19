@@ -3,7 +3,7 @@
 <?php ob_start(); ?>
 
     <a href="<?= URLROOT; ?>/posts" class="btn btn-light"><i class="fas fa-backward"></i> Back</a>
-    <div class="card card-body bg-light mt-5">
+    <div class="card card-body bg-light my-5">
         <?php flash('register_success'); ?>
         <h2>Modifier un billet</h2>
         <p>Ecrivez un nouveau billet à l'aide du formulaire</p>

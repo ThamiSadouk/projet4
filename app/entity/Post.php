@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-
 /**
  * Class Post représente une entrée de la table posts enregistréé dans la BDD
  */

@@ -58,7 +58,7 @@ class Comment
      */
     public function getAuthor()
     {
-        return $this->author;
+        return htmlspecialchars($this->author);
     }
 
     /**
@@ -74,7 +74,7 @@ class Comment
      */
     public function getComment()
     {
-        return $this->comment;
+        return htmlspecialchars($this->comment);
     }
 
     /**
